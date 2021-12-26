@@ -7,6 +7,9 @@ import {
   ScrollRestoration,
 } from 'remix';
 import type { MetaFunction } from 'remix';
+import clsx from 'clsx';
+
+import { ThemeProvider, useTheme } from '~/utils/theme-provider';
 
 import styles from './tailwind.css';
 
@@ -18,9 +21,11 @@ export function links() {
   return [{ rel: 'stylesheet', href: styles }];
 }
 
-export default function App() {
+export function App() {
+  const [theme] = useTheme();
+
   return (
-    <html lang="en">
+    <html lang="en" className={clsx(theme)}>
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -34,5 +39,13 @@ export default function App() {
         {process.env.NODE_ENV === 'development' && <LiveReload />}
       </body>
     </html>
+  );
+}
+
+export default function AppWithProviders() {
+  return (
+    <ThemeProvider>
+      <App />
+    </ThemeProvider>
   );
 }
