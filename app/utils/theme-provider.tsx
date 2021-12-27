@@ -32,6 +32,42 @@ function ThemeProvider({ children }: { children: ReactNode }) {
   );
 }
 
+const clientThemeCode = `
+// hi there dear reader 👋
+// this is how I make certain we avoid a flash of the wrong theme. If you select
+// a theme, then I'll know what you want in the future and you'll not see this
+// script anymore.
+;(() => {
+  const theme = window.matchMedia(${JSON.stringify(prefersLightMQ)}).matches
+    ? 'light'
+    : 'dark';
+
+  const cl = document.documentElement.classList;
+
+  const themeAlreadyApplied = cl.contains('light') || cl.contains('dark');
+  if (themeAlreadyApplied) {
+    // this script shouldn't exist if the theme is already applied!
+    console.warn(
+      "Hi there, could you let Matt know you're seeing this message? Thanks!",
+    );
+  } else {
+    cl.add(theme);
+  }
+})();
+`;
+
+function NonFlashOfWrongThemeEls() {
+  return (
+    <script
+      // NOTE: we cannot use type="module" because that automatically makes
+      // the script "defer". That doesn't work for us because we need
+      // this script to run synchronously before the rest of the document
+      // is finished loading.
+      dangerouslySetInnerHTML={{ __html: clientThemeCode }}
+    />
+  );
+}
+
 function useTheme() {
   const context = useContext(ThemeContext);
   if (context === undefined) {
@@ -40,4 +76,4 @@ function useTheme() {
   return context;
 }
 
-export { Theme, ThemeProvider, useTheme };
+export { NonFlashOfWrongThemeEls, Theme, ThemeProvider, useTheme };

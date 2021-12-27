@@ -9,7 +9,11 @@ import {
 import type { MetaFunction } from 'remix';
 import clsx from 'clsx';
 
-import { ThemeProvider, useTheme } from '~/utils/theme-provider';
+import {
+  NonFlashOfWrongThemeEls,
+  ThemeProvider,
+  useTheme,
+} from '~/utils/theme-provider';
 
 import styles from './tailwind.css';
 
@@ -31,6 +35,7 @@ export function App() {
         <meta name="viewport" content="width=device-width,initial-scale=1" />
         <Meta />
         <Links />
+        <NonFlashOfWrongThemeEls />
       </head>
       <body>
         <Outlet />
