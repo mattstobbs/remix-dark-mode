@@ -4,7 +4,7 @@ export default function IndexRoute() {
   const [, setTheme] = useTheme();
 
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-900">
+    <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors">
       <div className="flex justify-center flex-wrap gap-4 py-8">
         <button
           className="text-gray-50 bg-gray-900 py-4 px-28 rounded-xl text-3xl border-4 border-gray-50"
@@ -18,6 +18,26 @@ export default function IndexRoute() {
         >
           Light
         </button>
+      </div>
+      <div className="mt-16 max-w-xl mx-4 sm:mx-auto text-gray-900 dark:text-gray-50">
+        <h1 className="text-4xl font-bold">Hey there 👋</h1>
+        <p className="mt-4 text-lg">
+          This is a demo for adding a dark mode to a{' '}
+          <a
+            className="text-blue-700 dark:text-blue-400 font-medium hover:underline hover:underline-offset-1"
+            href="https://remix.run/"
+          >
+            Remix
+          </a>{' '}
+          app. You can find the code on my{' '}
+          <a
+            className="text-blue-700 dark:text-blue-400 font-medium hover:underline hover:underline-offset-1"
+            href="https://github.com/mattstobbs/remix-dark-mode"
+          >
+            GitHub
+          </a>
+          .
+        </p>
       </div>
     </div>
   );
