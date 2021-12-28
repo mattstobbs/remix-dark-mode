@@ -1,10 +1,12 @@
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useEffect, useRef, useState } from 'react';
 import type { Dispatch, ReactNode, SetStateAction } from 'react';
+import { useFetcher } from 'remix';
 
 enum Theme {
   DARK = 'dark',
   LIGHT = 'light',
 }
+const themes: Array<Theme> = Object.values(Theme);
 
 type ThemeContextType = [Theme | null, Dispatch<SetStateAction<Theme | null>>];
 
@@ -24,6 +26,30 @@ function ThemeProvider({ children }: { children: ReactNode }) {
 
     return getPreferredTheme();
   });
+
+  const persistTheme = useFetcher();
+  // TODO: remove this when persistTheme is memoized properly
+  const persistThemeRef = useRef(persistTheme);
+  useEffect(() => {
+    persistThemeRef.current = persistTheme;
+  }, [persistTheme]);
+
+  const mountRun = useRef(false);
+
+  useEffect(() => {
+    if (!mountRun.current) {
+      mountRun.current = true;
+      return;
+    }
+    if (!theme) {
+      return;
+    }
+
+    persistThemeRef.current.submit(
+      { theme },
+      { action: 'action/set-theme', method: 'post' }
+    );
+  }, [theme]);
 
   return (
     <ThemeContext.Provider value={[theme, setTheme]}>
@@ -76,4 +102,8 @@ function useTheme() {
   return context;
 }
 
-export { NonFlashOfWrongThemeEls, Theme, ThemeProvider, useTheme };
+function isTheme(value: unknown): value is Theme {
+  return typeof value === 'string' && themes.includes(value as Theme);
+}
+
+export { isTheme, NonFlashOfWrongThemeEls, Theme, ThemeProvider, useTheme };
