@@ -5,15 +5,18 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  useLoaderData,
 } from 'remix';
-import type { MetaFunction } from 'remix';
+import type { LoaderFunction, MetaFunction } from 'remix';
 import clsx from 'clsx';
 
 import {
   NonFlashOfWrongThemeEls,
+  Theme,
   ThemeProvider,
   useTheme,
 } from '~/utils/theme-provider';
+import { getThemeSession } from './utils/theme.server';
 
 import styles from './tailwind.css';
 
@@ -25,7 +28,23 @@ export function links() {
   return [{ rel: 'stylesheet', href: styles }];
 }
 
+export type LoaderData = {
+  theme: Theme | null;
+};
+
+export const loader: LoaderFunction = async ({ request }) => {
+  const themeSession = await getThemeSession(request);
+
+  const data: LoaderData = {
+    theme: themeSession.getTheme(),
+  };
+
+  return data;
+};
+
 export function App() {
+  const data = useLoaderData<LoaderData>();
+
   const [theme] = useTheme();
 
   return (
@@ -35,7 +54,7 @@ export function App() {
         <meta name="viewport" content="width=device-width,initial-scale=1" />
         <Meta />
         <Links />
-        <NonFlashOfWrongThemeEls />
+        <NonFlashOfWrongThemeEls ssrTheme={Boolean(data.theme)} />
       </head>
       <body>
         <Outlet />
@@ -48,8 +67,10 @@ export function App() {
 }
 
 export default function AppWithProviders() {
+  const data = useLoaderData<LoaderData>();
+
   return (
-    <ThemeProvider>
+    <ThemeProvider specifiedTheme={data.theme}>
       <App />
     </ThemeProvider>
   );

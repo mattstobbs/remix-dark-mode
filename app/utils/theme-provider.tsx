@@ -16,8 +16,26 @@ const prefersLightMQ = '(prefers-color-scheme: light)';
 const getPreferredTheme = () =>
   window.matchMedia(prefersLightMQ).matches ? Theme.LIGHT : Theme.DARK;
 
-function ThemeProvider({ children }: { children: ReactNode }) {
+function ThemeProvider({
+  children,
+  specifiedTheme,
+}: {
+  children: ReactNode;
+  specifiedTheme: Theme | null;
+}) {
   const [theme, setTheme] = useState<Theme | null>(() => {
+    // On the server, if we don't have a specified theme then we should
+    // return null and the clientThemeCode will set the theme for us
+    // before hydration. Then (during hydration), this code will get the same
+    // value that clientThemeCode got so hydration is happy.
+    if (specifiedTheme) {
+      if (themes.includes(specifiedTheme)) {
+        return specifiedTheme;
+      } else {
+        return null;
+      }
+    }
+
     // there's no way for us to know what the theme should be in this context
     // the client will have to figure it out before hydration.
     if (typeof window !== 'object') {
@@ -82,15 +100,19 @@ const clientThemeCode = `
 })();
 `;
 
-function NonFlashOfWrongThemeEls() {
+function NonFlashOfWrongThemeEls({ ssrTheme }: { ssrTheme: boolean }) {
   return (
-    <script
-      // NOTE: we cannot use type="module" because that automatically makes
-      // the script "defer". That doesn't work for us because we need
-      // this script to run synchronously before the rest of the document
-      // is finished loading.
-      dangerouslySetInnerHTML={{ __html: clientThemeCode }}
-    />
+    <>
+      {ssrTheme ? null : (
+        <script
+          // NOTE: we cannot use type="module" because that automatically makes
+          // the script "defer". That doesn't work for us because we need
+          // this script to run synchronously before the rest of the document
+          // is finished loading.
+          dangerouslySetInnerHTML={{ __html: clientThemeCode }}
+        />
+      )}
+    </>
   );
 }
 
