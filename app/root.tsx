@@ -21,7 +21,10 @@ import { getThemeSession } from './utils/theme.server';
 import styles from './tailwind.css';
 
 export const meta: MetaFunction = () => {
-  return { title: 'New Remix App' };
+  return {
+    title: 'Remix Dark Mode',
+    description: 'A demo for adding a dark mode to a Remix app.',
+  };
 };
 
 export function links() {
@@ -52,7 +55,6 @@ export function App() {
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
-        <title>Remix Dark Mode</title>
         <Meta />
         <Links />
         <NonFlashOfWrongThemeEls ssrTheme={Boolean(data.theme)} />

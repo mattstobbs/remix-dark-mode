@@ -69,6 +69,15 @@ function ThemeProvider({
     );
   }, [theme]);
 
+  useEffect(() => {
+    const mediaQuery = window.matchMedia(prefersLightMQ);
+    const handleChange = () => {
+      setTheme(mediaQuery.matches ? Theme.LIGHT : Theme.DARK);
+    };
+    mediaQuery.addEventListener('change', handleChange);
+    return () => mediaQuery.removeEventListener('change', handleChange);
+  }, []);
+
   return (
     <ThemeContext.Provider value={[theme, setTheme]}>
       {children}
@@ -97,12 +106,39 @@ const clientThemeCode = `
   } else {
     cl.add(theme);
   }
+
+  const meta = document.querySelector('meta[name=color-scheme]');
+  if (meta) {
+    if (theme === 'dark') {
+      meta.content = 'dark light';
+    } else if (theme === 'light') {
+      meta.content = 'light dark';
+    }
+  } else {
+    console.warn(
+      "Hey, could you let Matt know you're seeing this message? Thanks!",
+    );
+  }
 })();
 `;
 
 function NonFlashOfWrongThemeEls({ ssrTheme }: { ssrTheme: boolean }) {
+  const [theme] = useTheme();
+
   return (
     <>
+      {/*
+        On the server, "theme" might be `null`, so clientThemeCode ensures that
+        this is correct before hydration.
+      */}
+      <meta
+        name="color-scheme"
+        content={theme === 'light' ? 'light dark' : 'dark light'}
+      />
+      {/*
+        If we know what the theme is from the server then we don't need
+        to do fancy tricks prior to hydration to make things match.
+      */}
       {ssrTheme ? null : (
         <script
           // NOTE: we cannot use type="module" because that automatically makes
