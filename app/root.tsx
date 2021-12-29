@@ -24,7 +24,7 @@ export const meta: MetaFunction = () => {
   const title = 'Remix Dark Mode';
   const description = 'A demo for adding a dark mode to a Remix app.';
   const url = 'https://remix-dark-mode.vercel.app/';
-  const image = 'TODO';
+  const image = `${url}remix-dark-mode.png`;
 
   return {
     title,
