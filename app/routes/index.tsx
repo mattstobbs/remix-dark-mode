@@ -38,6 +38,16 @@ export default function IndexRoute() {
           </a>
           .
         </p>
+        <p className="text-lg">
+          If you have any questions, feel free to message me on{' '}
+          <a
+            className="text-blue-700 dark:text-blue-400 font-medium hover:underline hover:underline-offset-1"
+            href="https://twitter.com/matt_stobbs"
+          >
+            Twitter
+          </a>
+          .
+        </p>
       </div>
     </div>
   );

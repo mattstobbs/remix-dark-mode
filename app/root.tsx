@@ -21,9 +21,27 @@ import { getThemeSession } from './utils/theme.server';
 import styles from './tailwind.css';
 
 export const meta: MetaFunction = () => {
+  const title = 'Remix Dark Mode';
+  const description = 'A demo for adding a dark mode to a Remix app.';
+  const url = 'https://remix-dark-mode.vercel.app/';
+  const image = 'TODO';
+
   return {
-    title: 'Remix Dark Mode',
-    description: 'A demo for adding a dark mode to a Remix app.',
+    title,
+    description,
+    keywords: 'Remix, Dark Mode',
+    image,
+    'og:url': url,
+    'og:title': title,
+    'og:description': description,
+    'og:image': image,
+    'twitter:card': 'summary_large_image',
+    'twitter:creator': '@matt_stobbs',
+    'twitter:site': '@matt_stobbs',
+    'twitter:title': title,
+    'twitter:description': description,
+    'twitter:image': image,
+    'twitter:alt': title,
   };
 };
 
