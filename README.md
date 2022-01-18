@@ -1,6 +1,6 @@
 # Remix Dark Mode
 
-This is a MVP example of how to implement dark mode in Remix.
+This is a MVP example of how to implement dark mode in Remix. A demo of the final product can be seen [here](https://remix-dark-mode.vercel.app/).
 
 - [Remix Docs](https://remix.run/docs)
 
