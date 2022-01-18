@@ -1,4 +1,6 @@
-# Welcome to Remix!
+# Remix Dark Mode
+
+This is a MVP example of how to implement dark mode in Remix.
 
 - [Remix Docs](https://remix.run/docs)
 
