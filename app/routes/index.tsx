@@ -38,6 +38,16 @@ export default function IndexRoute() {
           </a>
           .
         </p>
+        <p className="text-lg my-1">
+          You can also find a{' '}
+          <a
+            className="text-blue-700 dark:text-blue-400 font-medium hover:underline hover:underline-offset-1"
+            href="https://github.com/mattstobbs/remix-dark-mode"
+          >
+            complete guide to Remix dark mode
+          </a>{' '}
+          on my blog.
+        </p>
         <p className="text-lg">
           If you have any questions, feel free to message me on{' '}
           <a
