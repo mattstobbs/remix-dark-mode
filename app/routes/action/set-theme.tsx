@@ -8,7 +8,10 @@ export const action: ActionFunction = async ({ request }) => {
   const themeSession = await getThemeSession(request);
   const requestText = await request.text();
   const form = new URLSearchParams(requestText);
-  const theme = form.get('theme');
+  const theme = () => {
+    if (form.get('theme') === Theme.DARK) return Theme.DARK;
+    return Theme.LIGHT;
+  };
 
   if (!isTheme(theme)) {
     return json({
@@ -17,7 +20,7 @@ export const action: ActionFunction = async ({ request }) => {
     });
   }
 
-  themeSession.setTheme(theme);
+  themeSession.setTheme(theme());
   return json(
     { success: true },
     { headers: { 'Set-Cookie': await themeSession.commit() } }
