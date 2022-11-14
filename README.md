@@ -1,5 +1,7 @@
 # Remix Dark Mode
 
+**Note**: This repo is not being actively maintained. If you would like to see an up-to-date implementation, or suggest a change, I recommend the official Remix example repo, which was originally built based on this implementation. See https://github.com/remix-run/examples/tree/main/dark-mode.
+
 This is a MVP example of how to implement dark mode in Remix. A demo of the final product can be seen [here](https://remix-dark-mode.vercel.app/).
 
 - [Remix Docs](https://remix.run/docs)
