@@ -42,7 +42,7 @@ export default function IndexRoute() {
           You can also find a{' '}
           <a
             className="text-blue-700 dark:text-blue-400 font-medium hover:underline hover:underline-offset-1"
-            href="https://github.com/mattstobbs/remix-dark-mode"
+            href="https://www.mattstobbs.com/remix-dark-mode/"
           >
             complete guide to Remix dark mode
           </a>{' '}
