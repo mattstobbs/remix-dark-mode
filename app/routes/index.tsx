@@ -22,6 +22,17 @@ export default function IndexRoute() {
       <div className="mt-16 max-w-xl mx-4 sm:mx-auto text-gray-900 dark:text-gray-50">
         <h1 className="text-4xl font-bold">Hey there 👋</h1>
         <p className="mt-4 text-lg">
+          <strong>2024 Update</strong>: this is no longer the approach I take. I
+          highly recommend reading my updated post:{' '}
+          <a
+            className="text-blue-700 dark:text-blue-400 font-medium hover:underline hover:underline-offset-1"
+            href="https://www.mattstobbs.com/remix-dark-mode-2024/"
+          >
+            The Complete Guide to Dark Mode with Remix (2024)
+          </a>
+          .
+        </p>
+        <p className="mt-4 text-lg">
           This is a demo for adding a dark mode to a{' '}
           <a
             className="text-blue-700 dark:text-blue-400 font-medium hover:underline hover:underline-offset-1"
