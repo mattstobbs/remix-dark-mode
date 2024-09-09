@@ -1,24 +1,21 @@
+import { type LoaderFunctionArgs, type MetaFunction } from '@remix-run/node';
 import {
+  json,
   Links,
-  LiveReload,
   Meta,
   Outlet,
   Scripts,
   ScrollRestoration,
   useLoaderData,
-} from 'remix';
-import type { LoaderFunction, MetaFunction } from 'remix';
+} from '@remix-run/react';
 import clsx from 'clsx';
-
 import {
   NonFlashOfWrongThemeEls,
-  Theme,
   ThemeProvider,
   useTheme,
-} from '~/utils/theme-provider';
+} from './utils/theme-provider';
 import { getThemeSession } from './utils/theme.server';
-
-import styles from './tailwind.css';
+import './tailwind.css';
 
 export const meta: MetaFunction = () => {
   const title = 'Remix Dark Mode';
@@ -26,45 +23,35 @@ export const meta: MetaFunction = () => {
   const url = 'https://remix-dark-mode.vercel.app/';
   const image = `${url}remix-dark-mode.png`;
 
-  return {
-    title,
-    description,
-    keywords: 'Remix, Dark Mode',
-    image,
-    'og:url': url,
-    'og:title': title,
-    'og:description': description,
-    'og:image': image,
-    'twitter:card': 'summary_large_image',
-    'twitter:creator': '@matt_stobbs',
-    'twitter:site': '@matt_stobbs',
-    'twitter:title': title,
-    'twitter:description': description,
-    'twitter:image': image,
-    'twitter:alt': title,
-  };
+  return [
+    { title },
+    { name: 'description', content: description },
+    { name: 'keywords', content: 'Remix, Dark Mode' },
+    { name: 'image', content: image },
+    { name: 'og:url', content: url },
+    { name: 'og:title', content: title },
+    { name: 'og:description', content: description },
+    { name: 'og:image', content: image },
+    { name: 'twitter:card', content: 'summary_large_image' },
+    { name: 'twitter:creator', content: '@matt_stobbs' },
+    { name: 'twitter:site', content: '@matt_stobbs' },
+    { name: 'twitter:title', content: title },
+    { name: 'twitter:description', content: description },
+    { name: 'twitter:image', content: image },
+    { name: 'twitter:alt', content: title },
+  ];
 };
 
-export function links() {
-  return [{ rel: 'stylesheet', href: styles }];
-}
-
-export type LoaderData = {
-  theme: Theme | null;
-};
-
-export const loader: LoaderFunction = async ({ request }) => {
+export const loader = async ({ request }: LoaderFunctionArgs) => {
   const themeSession = await getThemeSession(request);
 
-  const data: LoaderData = {
+  return json({
     theme: themeSession.getTheme(),
-  };
-
-  return data;
+  });
 };
 
 function App() {
-  const data = useLoaderData<LoaderData>();
+  const data = useLoaderData<typeof loader>();
 
   const [theme] = useTheme();
 
@@ -72,7 +59,7 @@ function App() {
     <html lang="en" className={clsx(theme)}>
       <head>
         <meta charSet="utf-8" />
-        <meta name="viewport" content="width=device-width,initial-scale=1" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
         <Meta />
         <Links />
         <NonFlashOfWrongThemeEls ssrTheme={Boolean(data.theme)} />
@@ -81,14 +68,13 @@ function App() {
         <Outlet />
         <ScrollRestoration />
         <Scripts />
-        {process.env.NODE_ENV === 'development' && <LiveReload />}
       </body>
     </html>
   );
 }
 
 export default function AppWithProviders() {
-  const data = useLoaderData<LoaderData>();
+  const data = useLoaderData<typeof loader>();
 
   return (
     <ThemeProvider specifiedTheme={data.theme}>

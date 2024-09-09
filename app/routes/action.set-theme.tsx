@@ -1,10 +1,8 @@
-import { json, redirect } from 'remix';
-import type { ActionFunction, LoaderFunction } from 'remix';
-
 import { getThemeSession } from '~/utils/theme.server';
 import { isTheme } from '~/utils/theme-provider';
+import { type ActionFunctionArgs, json, redirect } from '@remix-run/node';
 
-export const action: ActionFunction = async ({ request }) => {
+export const action = async ({ request }: ActionFunctionArgs) => {
   const themeSession = await getThemeSession(request);
   const requestText = await request.text();
   const form = new URLSearchParams(requestText);
@@ -24,4 +22,4 @@ export const action: ActionFunction = async ({ request }) => {
   );
 };
 
-export const loader: LoaderFunction = () => redirect('/', { status: 404 });
+export const loader = () => redirect('/', { status: 404 });
